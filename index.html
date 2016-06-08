@@ -1,0 +1,106 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+            .googlemap {
+                width: 800px;
+                height: 400px;
+                margin: 0 auto;
+            }
+        </style>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">
+            function pinSymbol(color) {
+                return {
+                    path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+                    fillColor: color,
+                    fillOpacity: 1,
+                    strokeColor: '#000',
+                    strokeWeight: 2,
+                    scale: 4
+                };
+            }
+            var markers = [
+            {
+                "title": 'Aksa Beach',
+                "lat": '19.1759668',
+                "lng": '72.79504659999998',
+                "label": "30mm",
+                "description": 'Aksa Beach is a popular beach and a vacation spot in Aksa village at Malad, Mumbai.'
+            },
+            {
+                "title": 'Juhu Beach',
+                "lat": '19.0883595',
+                "lng": '72.82652380000002',
+                "label": "50mm",
+                "description": 'Juhu Beach is one of favourite tourist attractions situated in Mumbai.'
+            },
+            {
+                "title": 'Girgaum Beach',
+                "lat": '18.9542149',
+                "lng": '72.81203529999993',
+                "label": "10mm",
+                "description": 'Girgaum Beach commonly known as just Chaupati is one of the most famous public beaches in Mumbai.'
+            },
+            {
+                "title": 'Jijamata Udyan',
+                "lat": '18.979006',
+                "lng": '72.83388300000001',
+                "label": "0mm",
+                "description": 'Jijamata Udyan is situated near Byculla station is famous as Mumbai (Bombay) Zoo.'
+            },
+            {
+                "title": 'Sanjay Gandhi National Park',
+                "lat": '19.2147067',
+                "lng": '72.91062020000004',
+                "label": "60mm",
+                "description": 'Sanjay Gandhi National Park is a large protected area in the northern part of Mumbai city.'
+            }
+            ];
+            window.onload = function () {
+                LoadMap();
+            }
+            function LoadMap() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
+                    zoom: 10,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                //Create and open InfoWindow.
+                var infoWindow = new google.maps.InfoWindow();
+
+                for (var i = 0; i < markers.length; i++) {
+                    var data = markers[i];
+                    var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+                    var label = data.label;
+                    var image = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23808080%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E' + data.label + '%3C%2Ftext%3E%3C%2Fsvg%3E';
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map,
+                        icon: image,
+                        title: data.title
+                    });
+
+                    //Attach click event to the marker.
+                    (function (marker, data) {
+                        google.maps.event.addListener(marker, "click", function (e) {
+                            //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                            infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.description + "</div>");
+                            infoWindow.open(map, marker);
+                        });
+                    })(marker, data);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="map" class="googlemap"></div>
+    </body>
+</html>
